@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class IdorApplication {
 
 	public static void main(String[] args) {
-		IdorModel.init();
 		SpringApplication.run(IdorApplication.class, args);
 	}
 

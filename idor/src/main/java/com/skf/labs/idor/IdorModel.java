@@ -21,16 +21,6 @@ private static int min = 1;
 private static int max = 100;
 private static Random rand;
 
-   public static void init(){
-       createPdfPool();
-   }
-
-   public static void createPdfPool(){
-    rand = new Random();
-    for(int i = 0; i < 60; i++) createPdf("Try again!");
-    createPdf("You have found the secret pdf, congratulations!");
-    }
-
    public static int createPdf(String message){
     try{
        int pdfId = rand.nextInt(max-min+1)+min;
