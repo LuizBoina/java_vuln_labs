@@ -15,10 +15,14 @@ import java.io.InputStream;
 public class XxeController {
 	@PostMapping("/home")
 	public String home(@RequestParam(name = "xxe", required = true, defaultValue = "xxe") String xxe, Model model) {
-		// parse xxe xml and return nodes as string
 		String nodes = "";
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);	// disable DTD
+			// factory.setFeature("http://xml.org/sax/features/external-general-entities", false); // or just disable external entities
+			// factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+			factory.setXIncludeAware(false);	// disable xinclude
+			factory.setExpandEntityReferences(false);	// prevent XML bomb
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			InputStream is = new ByteArrayInputStream(xxe.getBytes());
 			org.w3c.dom.Document doc = builder.parse(is);

@@ -14,6 +14,7 @@ import com.skf.labs.xssstored.Page;
 import com.skf.labs.xssstored.XssStoredModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.owasp.encoder.Encode;
 
 @Controller
 public class XssStoredController {
@@ -31,12 +32,14 @@ public class XssStoredController {
 	public String update(@RequestParam(name="pageId", required=true) int pageId,
                         @RequestParam(name="title", required=true) String title,
                         @RequestParam(name="content", required=true) String content) {
-    Page page = new Page(pageId, title, content);
+    String encodedContent = escapeHTML(content);
+    String encodedTitle = escapeHTML(title);
+    Page page = new Page(pageId, encodedTitle, encodedContent);
     xssModel.updatePage(page);
         return "redirect:/home/"+pageId;
     }
 
-
-
-    
+    private static String escapeHTML(String s) {
+		return Encode.forHtml(s);
+    }
 }

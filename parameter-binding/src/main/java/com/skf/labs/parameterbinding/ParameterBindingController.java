@@ -42,7 +42,9 @@ public class ParameterBindingController {
     }
 
     @PostMapping("/create")
-    public String createUser(User user, Model model) {
+    public String createUser(User req, Model model) {
+        // ensure isAdmin equals to false or create new User object
+        User user = new User(req.getUsername(), req.getPassword(), false);
         authModel.createUser(user);
         model.addAttribute("content", "Your user has been created");
         return "index";

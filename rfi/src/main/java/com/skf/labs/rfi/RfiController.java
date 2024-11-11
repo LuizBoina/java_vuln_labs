@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -26,6 +27,11 @@ public class RfiController {
   @PostMapping("/cmd")
   public String login(@RequestParam(name = "filename", required = true) String filename, Model model)
       throws IOException, InterruptedException {
+    List<String> allowedFilenames = List.of("text/command1.txt", "text/command2.txt");
+    if (!allowedFilenames.contains(filename)) {
+        model.addAttribute("result", "File name not allowed");
+        return "index";
+      } 
     HttpServletRequest request = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder
         .getRequestAttributes())
         .getRequest();

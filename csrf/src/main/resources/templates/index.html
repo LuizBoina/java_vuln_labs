@@ -68,6 +68,7 @@
 							<form method="post" action="/login">
 								<div>credencials: admin:admin</div>
 								<input type="text" class="form-control" name="username" placeholder="username" /><br />
+								<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 								<input type="password" class="form-control" name="password"
 									placeholder="password" /><br />
 								<button class="btn btn-primary" type="submit">Submit Button</button>

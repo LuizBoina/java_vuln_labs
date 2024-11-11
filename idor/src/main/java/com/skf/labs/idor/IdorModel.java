@@ -13,31 +13,26 @@ import com.itextpdf.text.Chunk;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.DocumentException;
+import java.util.UUID;
 
 public class IdorModel {
 
-public static List<Integer> pdfs = new ArrayList<Integer>();
-private static int min = 1;
-private static int max = 100;
-private static Random rand;
-
-   public static int createPdf(String message){
+   public static String createPdf(String message){
     try{
-       int pdfId = rand.nextInt(max-min+1)+min;
+       String pdfUuid = UUID.randomUUID().toString();
        Document document = new Document();
-       PdfWriter.getInstance(document, new FileOutputStream(pdfId+".pdf"));
+       PdfWriter.getInstance(document, new FileOutputStream(pdfUuid+".pdf"));
        document.open();
        Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
        Chunk chunk = new Chunk(message, font);
        document.add(chunk);
        document.close();
-       pdfs.add(pdfId);
-       return pdfId;
+       return pdfUuid;
     }catch(FileNotFoundException e){
         e.printStackTrace();
     }catch(DocumentException e){
         e.printStackTrace();
     }
-    return -1;
+    return "";
    }  
 }

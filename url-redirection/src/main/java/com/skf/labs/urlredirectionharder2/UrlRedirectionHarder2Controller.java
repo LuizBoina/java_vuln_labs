@@ -30,12 +30,8 @@ public class UrlRedirectionHarder2Controller {
             RequestMethod.POST
         }
     )
-	public String redirect(@RequestParam(name="newurl", required=true) String newurl, Model model) {
-        if(blacklist(newurl)){
-            model.addAttribute("content", "Sorry, you cannot use \".\" and \"/\" in the redirect. Good luck!");
-            return "index";
-        }
-		return "redirect:"+newurl;
+	public String redirect(Model model) {
+		return "redirect:newsite";
 	}
     
     private boolean blacklist(String url){

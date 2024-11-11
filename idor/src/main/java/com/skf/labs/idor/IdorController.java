@@ -24,9 +24,10 @@ public class IdorController {
     @PostMapping("/download")
     public ResponseEntity<Resource> download(@RequestParam(name="pdf_id", required=true) String pdf_id) throws IOException {
         HttpHeaders header;
-        if(IdorModel.pdfs.indexOf(Integer.parseInt(pdf_id)) != -1){
-            String fileName = pdf_id+".pdf";
-            File file = new File(fileName);
+        String fileName = pdf_id + ".pdf";
+        File file = new File(fileName);
+
+        if (file.exists() && file.isFile()) {
             Path path = Paths.get(file.getAbsolutePath());
             ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
             header = new HttpHeaders();
@@ -42,14 +43,14 @@ public class IdorController {
 
     @PostMapping("/create")
     public String create(@RequestParam(name="message", required=true) String message, Model model){
-        int pdfId = IdorModel.createPdf(message);
-        model.addAttribute("content", "Pdf created successfully! ID:"+pdfId);
+        String pdfUuid = IdorModel.createPdf(message);
+        model.addAttribute("content", "Pdf created successfully! UUID:"+pdfUuid);
         return "index";
     }
 
     @GetMapping("/notfound")
     public String nofound(Model model){
-        model.addAttribute("content", "Pdf not found. Try with another id between 1 and 1500.");
+        model.addAttribute("content", "Pdf not found. Try with another UUID.");
         return "index";
     }
 

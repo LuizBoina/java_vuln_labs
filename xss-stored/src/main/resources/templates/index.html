@@ -83,10 +83,11 @@
 				<a href="#" onclick='$("#updateForm").toggle();'>Edit</a>
 				<div id="updateForm" stype="display:none">
 					<form method="POST" action="/update">
+						<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 						<input name="pageId" type="hidden" th:value="${page?.pageId}" />
 						<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Title:&nbsp;<input name="title" type="text"
 								th:value="${page?.title}" /></p>
-						<p>Content:&nbsp;<textarea name="content" th:text="${page?.content}" /></textarea></p>
+						<p>Content:&nbsp;<textarea name="content" th:text="${page?.content}"></textarea></p>
 						<p><input type="submit" value="Save" /></p>
 					</form>
 				</div>

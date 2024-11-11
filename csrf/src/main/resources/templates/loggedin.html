@@ -67,6 +67,7 @@
 							<form method="post" action="/update">
 								<input type="text" class="form-control" name="color"
 									placeholder="favorite color" /><br />
+								<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 								<button class="btn btn-primary" type="submit">Submit Button</button>
 								<a style="float:right; margin-top:1%;" href="/update"> refresh the page</a><br />
 						</div>

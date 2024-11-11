@@ -8,6 +8,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.tika.Tika;
+import java.util.List;
+import java.util.UUID;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 @Controller
 public class FileUploadController {
@@ -28,14 +35,26 @@ public class FileUploadController {
   @PostMapping("/")
   public String handleFileUpload(@RequestParam("file") MultipartFile file,
       Model model) {
-    String[] allowedFileExtensions = new String[] { "txt", "pdf", "png", "jpg", "gif", "html" };
-    String fileExtension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1);
-    if (java.util.Arrays.asList(allowedFileExtensions).contains(fileExtension)) {
-      storageService.store(file);
+    try {
+      Tika tika = new Tika();
+      String mimeType = tika.detect(file.getInputStream());
+      List<String> allowedTypes = List.of("image/jpeg", "image/png");
+      String originalFileName = FilenameUtils.getName(file.getOriginalFilename());
+      if (!allowedTypes.contains(mimeType)) {
+        model.addAttribute("uploaded", "File extension not allowed");
+        return "index";
+      } 
+      originalFileName = FilenameUtils.getName(file.getOriginalFilename());
+      String fileExtension = FilenameUtils.getExtension(originalFileName);
+      String uniqueFileName = UUID.randomUUID().toString() + "." + fileExtension;
+      
+      storageService.store(file, uniqueFileName);
       model.addAttribute("uploaded", "You successfully uploaded!");
       return "index";
-    } else {
-      model.addAttribute("uploaded", "File extension not allowed");
+
+    } catch(IOException e) {
+      System.out.println(e);
+      model.addAttribute("uploaded", "Error Trying to upload file");
       return "index";
     }
   }
