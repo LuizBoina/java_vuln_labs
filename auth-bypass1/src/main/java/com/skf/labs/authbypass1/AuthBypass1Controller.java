@@ -36,8 +36,7 @@ public class AuthBypass1Controller {
             if (users.size() > 0 && (users.get(0).getPassword().equals(password))) {
                 request.getSession().setAttribute("loggedin", true);
                 request.getSession().setAttribute("username", username);
-                String hash = BCrypt.hashpw(username, BCrypt.gensalt());
-                Cookie cookie = new Cookie("sessionId", hash);
+                Cookie cookie = new Cookie("sessionId", users.get(0).getHash());
                 // cookie.setSecure(true);
                 // cookie.setHttpOnly(true);
                 // cookie.setMaxAge(3 * 60 * 60);
