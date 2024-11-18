@@ -32,6 +32,7 @@ public class RfiController {
     String url = request.getRequestURL().toString();
     if (!filename.contains("http")) {
       String host = url.substring(0, url.lastIndexOf("/"));
+      host = host.replaceFirst("http://", "https://");
       filename = host + "/" + filename;
     }
     URL path = new URL(filename);

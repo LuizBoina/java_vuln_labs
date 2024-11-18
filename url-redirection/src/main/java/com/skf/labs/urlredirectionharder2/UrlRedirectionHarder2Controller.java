@@ -39,7 +39,7 @@ public class UrlRedirectionHarder2Controller {
 	}
     
     private boolean blacklist(String url){
-        String[] blacklist = new String[]{".","/"};
+        String[] blacklist = new String[]{".", "/"};
         for(String b: blacklist){
             if(url.indexOf(b) > -1){
                 return true;
