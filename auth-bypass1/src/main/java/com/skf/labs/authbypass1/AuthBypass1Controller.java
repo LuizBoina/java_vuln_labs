@@ -79,13 +79,17 @@ public class AuthBypass1Controller {
             HttpServletRequest request) {
         if (isLoggedIn(request)) {
             List<User> users = authModel.getHash(sessionId);
-            if (users.get(0).getUsername().toLowerCase().equals("admin")) {
-                model.addAttribute("content", "Congratulations!");
-            } else {
-                model.addAttribute("content", "Find the way to login as an admin!");
+            if(!users.isEmpty()) {
+                if (users.get(0).getUsername().toLowerCase().equals("admin")) {
+                    model.addAttribute("content", "Congratulations!");
+                } else {
+                    model.addAttribute("content", "Find the way to login as an admin!");
+                }
+                model.addAttribute("username", users.get(0).getUsername().toLowerCase());
+                return "loggedin";
             }
-            model.addAttribute("username", users.get(0).getUsername().toLowerCase());
-            return "loggedin";
+            model.addAttribute("content", "User not found");
+            return "index";
 
         }
         model.addAttribute("content", "You have to login first");

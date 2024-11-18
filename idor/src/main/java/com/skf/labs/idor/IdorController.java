@@ -26,7 +26,6 @@ public class IdorController {
         HttpHeaders header;
         String fileName = pdf_id + ".pdf";
         File file = new File(fileName);
-
         if (file.exists() && file.isFile()) {
             Path path = Paths.get(file.getAbsolutePath());
             ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));

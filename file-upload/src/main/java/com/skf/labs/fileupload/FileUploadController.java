@@ -39,13 +39,13 @@ public class FileUploadController {
       Tika tika = new Tika();
       String mimeType = tika.detect(file.getInputStream());
       List<String> allowedTypes = List.of("image/jpeg", "image/png");
+      List<String> allowedExt = List.of("png", "jpeg", "jpg");
       String originalFileName = FilenameUtils.getName(file.getOriginalFilename());
-      if (!allowedTypes.contains(mimeType)) {
+      String fileExtension = FilenameUtils.getExtension(originalFileName);
+      if (!allowedTypes.contains(mimeType) || !allowedExt.contains(fileExtension)) {
         model.addAttribute("uploaded", "File extension not allowed");
         return "index";
       } 
-      originalFileName = FilenameUtils.getName(file.getOriginalFilename());
-      String fileExtension = FilenameUtils.getExtension(originalFileName);
       String uniqueFileName = UUID.randomUUID().toString() + "." + fileExtension;
       
       storageService.store(file, uniqueFileName);
